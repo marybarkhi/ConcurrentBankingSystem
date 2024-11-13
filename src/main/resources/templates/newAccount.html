@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Create New Account</title>
+</head>
+<body>
+<div align="center" style="border: 1px solid black">
+    <h1 style="color: forestgreen">Create New Account</h1>
+    <br/>
+    <form action="#" th:action="@{/create}"
+          th:object="${account}" method="post">
+        <table border="0" cellpadding="10">
+            <tr>
+                <td>Account Holder Name:</td>
+                <td>
+                    <input type="text" th:field="*{accountHolderName}"
+                           required/>
+                </td>
+            </tr>
+            <tr>
+                <td>Initial Balance :</td>
+                <td>
+                    <input type="number" th:field="*{balance}"
+                           required/>
+                </td>
+            </tr>
+            <tr>
+                <td>Branch:</td>
+                <td>
+                    <input type="number" th:field="*{branchCode}"
+                           required/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button style="color: forestgreen" type="submit">Create</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+</html>

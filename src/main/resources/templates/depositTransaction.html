@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Deposit</title>
+</head>
+<body>
+<div align="center" style="border: 1px solid black">
+    <h1>Deposit Account</h1>
+    <br/>
+    <form action="#" th:action="@{/deposit}"
+          th:object="${account}" method="post">
+        <table border="0" cellpadding="10">
+            <tr>
+                <td>Account Number:</td>
+                <td>
+                    <input readonly type="text" id="accountNumber" name="accountNumber"
+                           th:field="*{accountNumber}"
+                           required/>
+                </td>
+            </tr>
+            <tr>
+                <td>Balance:</td>
+                <td>
+                    <input readonly type="text"
+                           th:field="*{balance}"
+                           required/>
+                </td>
+            </tr>
+            <tr>
+                <td>Transaction Amount:</td>
+                <td>
+                    <input type="number" id="amount" name="amount"
+                           required/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button style="color: green" type="submit">Deposit</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+</html>
