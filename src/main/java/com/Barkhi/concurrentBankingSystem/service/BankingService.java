@@ -14,4 +14,6 @@ public interface BankingService {
     void withdraw(String accountNumber, BigDecimal amount) throws ExecutionException, InterruptedException;
 
     void transfer(String fromAccount, String toAccount, BigDecimal amount);
+
+    BankAccount getAccount(String accountNumber);
 }

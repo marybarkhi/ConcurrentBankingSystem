@@ -39,6 +39,7 @@ public class BankService implements BankingService {
         account.setAccountHolderName(holderName);
         account.setAccountNumber(generateAccountNumber(branchCode));
         account.setBalance(initialBalance);
+        account.setBranchCode(branchCode);
         return bankJpaRepository.save(account);
     }
 
@@ -107,7 +108,7 @@ public class BankService implements BankingService {
         return branchCode + "-" + String.valueOf(Math.random());
     }
 
-    private BankAccount getAccount(String accountNumber) {
+    public BankAccount getAccount(String accountNumber) {
         BankAccount account = bankJpaRepository.findByAccountNumber(accountNumber)
                 .orElseThrow(() -> new NoSuchElementException());
         return account;

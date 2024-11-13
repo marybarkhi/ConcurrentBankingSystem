@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Concurrent Banking System homPage</title>
+</head>
+<body>
+<a th:href="@{/new}">Add New Customer</a>
+<br/>
+<a th:href="@{/accounts}">Display all Accounts</a>
+<br/>
+<a th:href="@{'/transaction' + ${accountNumber}}">Deposit an account</a>
+<br/>
+<a th:href="@{'/transaction' + ${accountNumber}}">WithDraw from an account</a>
+<br/>
+<a th:href="@{/transfer}">transfer money between two accounts</a>
+</body>
+</html>

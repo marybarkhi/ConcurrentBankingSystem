@@ -2,19 +2,18 @@ package com.Barkhi.concurrentBankingSystem.controller;
 
 
 import com.Barkhi.concurrentBankingSystem.model.BankAccount;
-import com.Barkhi.concurrentBankingSystem.model.valueobject.AccountCreationRequest;
-import com.Barkhi.concurrentBankingSystem.model.valueobject.TransactionRequest;
 import com.Barkhi.concurrentBankingSystem.model.valueobject.TransferRequest;
 import com.Barkhi.concurrentBankingSystem.service.impl.BankService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-@RestController
-@RequestMapping("/api/bank")
+@Controller
+@RequestMapping
 public class BankController {
 
     private BankService bankService;
@@ -23,25 +22,50 @@ public class BankController {
         this.bankService = bankService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<BankAccount>> displayAccounts() {
+    @GetMapping("/accounts")
+    public String displayAccounts(Model model) {
         List<BankAccount> bankAccounts = bankService.displayAllAccounts();
-        return ResponseEntity.status(HttpStatus.OK).body(bankAccounts);
+        model.addAttribute("accounts", bankAccounts);
+        return "";
     }
 
-    @PostMapping("/account")
-    public BankAccount createAccount(@RequestBody AccountCreationRequest request) {
-        return bankService.createAccount(request.accountHolderName(), request.initialBalance(), request.branchCode());
+    @GetMapping("/new")
+    public String showNewAccountPage(Model model) {
+        BankAccount bankAccount = new BankAccount();
+        model.addAttribute("account", bankAccount);
+        return "NewAccount";
     }
 
-    @PostMapping("/accounts/{accountNumber}/deposit")
-    public void deposit(@PathVariable String accountNumber, @RequestBody TransactionRequest request) {
-        bankService.deposit(accountNumber, request.amount());
+    @PostMapping("/create")
+    public String createAccount(@ModelAttribute("account") BankAccount bankAccount) {
+        bankService.createAccount(bankAccount.getAccountHolderName(), bankAccount.getBalance(), bankAccount.getBranchCode());
+        return "redirect:/";
+
     }
 
-    @PostMapping("/accounts/{accountNumber}/withdraw")
-    public void withdraw(@PathVariable String accountNumber, @RequestBody TransactionRequest request) throws ExecutionException, InterruptedException {
-        bankService.withdraw(accountNumber, request.amount());
+    @GetMapping("/transaction/{accountNumber}")
+    public ModelAndView showTransactionPage(@PathVariable String accountNumber) {
+        ModelAndView modelAndView = new ModelAndView("Transaction");
+        BankAccount bankAccount = bankService.getAccount(accountNumber);
+        modelAndView.addObject("account", bankAccount);
+        return modelAndView;
+    }
+
+    @PostMapping("/deposit")
+    public String deposit(@RequestParam String accountNumber, @RequestParam BigDecimal amount) {
+       /* if (!accountNumber.equals(transactionRequest.accountNumber())) {
+            model.addAttribute("message",
+                    "Cannot deposit account " + transactionRequest.accountNumber()
+                            + " doesn't match id to update: " + accountNumber + ".");
+            return "error-page";
+        }*/
+        bankService.deposit(accountNumber, amount);
+        return "redirect:/";
+    }
+
+    @PostMapping("/withdraw")
+    public void withdraw(@RequestParam String accountNumber, @RequestParam BigDecimal amount){
+        bankService.withdraw(accountNumber, amount);
     }
 
     @PostMapping("/transfer")

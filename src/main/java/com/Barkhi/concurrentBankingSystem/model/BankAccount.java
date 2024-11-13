@@ -36,6 +36,9 @@ public class BankAccount {
     @Column(nullable = false)
     private BigDecimal balance;
 
+    @Column(nullable = false)
+    private String branchCode;
+
     public BankAccount() {
         this.id = UUID.randomUUID();
     }
