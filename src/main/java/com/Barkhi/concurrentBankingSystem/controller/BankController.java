@@ -22,11 +22,11 @@ public class BankController {
         this.bankService = bankService;
     }
 
-    @GetMapping("/accounts")
+    @GetMapping
     public String displayAccounts(Model model) {
         List<BankAccount> bankAccounts = bankService.displayAllAccounts();
         model.addAttribute("accounts", bankAccounts);
-        return "";
+        return "index";
     }
 
     @GetMapping("/new")
@@ -43,9 +43,9 @@ public class BankController {
 
     }
 
-    @GetMapping("/transaction/{accountNumber}")
-    public ModelAndView showTransactionPage(@PathVariable String accountNumber) {
-        ModelAndView modelAndView = new ModelAndView("Transaction");
+    @GetMapping("/depositTransaction/{accountNumber}")
+    public ModelAndView showDepositTransactionPage(@PathVariable String accountNumber) {
+        ModelAndView modelAndView = new ModelAndView("depositTransaction");
         BankAccount bankAccount = bankService.getAccount(accountNumber);
         modelAndView.addObject("account", bankAccount);
         return modelAndView;
@@ -63,13 +63,37 @@ public class BankController {
         return "redirect:/";
     }
 
+    @GetMapping("/withDrawTransaction/{accountNumber}")
+    public ModelAndView showWithDrawTransactionPage(@PathVariable String accountNumber) {
+        ModelAndView modelAndView = new ModelAndView("withDrawTransaction");
+        BankAccount bankAccount = bankService.getAccount(accountNumber);
+        modelAndView.addObject("account", bankAccount);
+        return modelAndView;
+    }
+
     @PostMapping("/withdraw")
-    public void withdraw(@RequestParam String accountNumber, @RequestParam BigDecimal amount){
+    public String withdraw(@RequestParam String accountNumber, @RequestParam BigDecimal amount) {
         bankService.withdraw(accountNumber, amount);
+        return "redirect:/";
+    }
+
+    @GetMapping("/transferMoneyTransaction/{sourceAccountNumber}")
+    public ModelAndView showTransferMoneyPage(@PathVariable String sourceAccountNumber) {
+        ModelAndView modelAndView = new ModelAndView("transferMoneyTransaction");
+        BankAccount bankAccount = bankService.getAccount(sourceAccountNumber);
+        modelAndView.addObject("account", bankAccount);
+        return modelAndView;
     }
 
     @PostMapping("/transfer")
-    public void transfer(@RequestBody TransferRequest request) {
-        bankService.transfer(request.fromAccountNumber(), request.toAccountNumber(), request.amount());
+    public String transfer(@RequestParam String accountNumber,
+                           @RequestParam BigDecimal balance,
+                           @RequestParam String destinationAccountNumber,
+                           @RequestParam BigDecimal transferAmount) {
+        if (balance.compareTo(transferAmount) <= 0) {
+            //
+        }
+        bankService.transfer(accountNumber, destinationAccountNumber, transferAmount);
+        return "redirect:/";
     }
 }

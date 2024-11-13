@@ -57,7 +57,7 @@ public class BankService implements BankingService {
             return null;
         });
         try {
-            depositFuture.get(200, TimeUnit.MILLISECONDS);
+            depositFuture.get(3000, TimeUnit.MILLISECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             throw new RuntimeException(e);
         }

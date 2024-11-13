@@ -5,14 +5,35 @@
     <title>Concurrent Banking System homPage</title>
 </head>
 <body>
-<a th:href="@{/new}">Add New Customer</a>
-<br/>
-<a th:href="@{/accounts}">Display all Accounts</a>
-<br/>
-<a th:href="@{'/transaction' + ${accountNumber}}">Deposit an account</a>
-<br/>
-<a th:href="@{'/transaction' + ${accountNumber}}">WithDraw from an account</a>
-<br/>
-<a th:href="@{/transfer}">transfer money between two accounts</a>
+<div align="center" style="height:400px; border: 1px solid black" >
+    <br/>
+    <br/>
+    <a th:href="@{/new}" style="color: green">Create New Account</a>
+    <br/>
+    <br/>
+    <br/>
+    <div align="center">
+        <form th:object="${account}" method="get">
+            <table style=" border: 1px solid black; border-inline: 1px solid black";  cellpadding="10">
+                <tr>
+                    <th>accountNumber</th>
+                    <th>accountHolderName</th>
+                    <th>balance</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr th:each="account: ${accounts}" style=" border: 1px solid black">
+                    <td th:text="${account.accountNumber}"/>
+                    <td th:text="${account.accountHolderName}"/>
+                    <td th:text="${account.balance}"/>
+                    <td><a th:href="@{'/depositTransaction/' + ${account.accountNumber}}">Deposit</a></td>
+                    <td><a th:href="@{'/withDrawTransaction/' + ${account.accountNumber}}">WithDraw</a></td>
+                    <td><a th:href="@{'/transferMoneyTransaction/' + ${account.accountNumber}}">Transfer Money To Another Account</a></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
 </body>
 </html>
