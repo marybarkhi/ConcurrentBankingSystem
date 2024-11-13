@@ -2,7 +2,6 @@ package com.Barkhi.concurrentBankingSystem.controller;
 
 
 import com.Barkhi.concurrentBankingSystem.model.BankAccount;
-import com.Barkhi.concurrentBankingSystem.model.valueobject.TransferRequest;
 import com.Barkhi.concurrentBankingSystem.service.impl.BankService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,12 +32,13 @@ public class BankController {
     public String showNewAccountPage(Model model) {
         BankAccount bankAccount = new BankAccount();
         model.addAttribute("account", bankAccount);
-        return "NewAccount";
+        return "newAccount";
     }
 
     @PostMapping("/create")
     public String createAccount(@ModelAttribute("account") BankAccount bankAccount) {
-        bankService.createAccount(bankAccount.getAccountHolderName(), bankAccount.getBalance(), bankAccount.getBranchCode());
+        bankService.createAccount(bankAccount.getAccountHolderName(), bankAccount.getBalance(),
+                bankAccount.getBranchCode());
         return "redirect:/";
 
     }
