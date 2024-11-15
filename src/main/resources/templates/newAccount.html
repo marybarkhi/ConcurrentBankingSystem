@@ -21,14 +21,14 @@
             <tr>
                 <td>Initial Balance :</td>
                 <td>
-                    <input type="number" th:field="*{balance}"
+                    <input type="number" min="0" th:field="*{balance}"
                            required/>
                 </td>
             </tr>
             <tr>
                 <td>Branch:</td>
                 <td>
-                    <input type="number" th:field="*{branchCode}"
+                    <input type="number" min="4" th:field="*{branchCode}"
                            required/>
                 </td>
             </tr>

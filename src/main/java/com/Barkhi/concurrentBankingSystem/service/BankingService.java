@@ -3,6 +3,7 @@ package com.Barkhi.concurrentBankingSystem.service;
 import com.Barkhi.concurrentBankingSystem.model.BankAccount;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public interface BankingService {
@@ -16,4 +17,6 @@ public interface BankingService {
     void transfer(String fromAccount, String toAccount, BigDecimal amount);
 
     BankAccount getAccount(String accountNumber);
+
+    List<BankAccount> displayAllAccounts();
 }

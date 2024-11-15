@@ -9,7 +9,7 @@ public class WithDrawStrategy implements TransactionStrategy {
     @Override
     public void execute(BankAccount account, BigDecimal amount) {
         if (account.getBalance().compareTo(amount) < 0) {
-            //throw new InsufficientFundsException();
+            throw new RuntimeException();
         }
         account.setBalance(account.getBalance().subtract(amount));
     }

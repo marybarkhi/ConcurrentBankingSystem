@@ -53,12 +53,6 @@ public class BankController {
 
     @PostMapping("/deposit")
     public String deposit(@RequestParam String accountNumber, @RequestParam BigDecimal amount) {
-       /* if (!accountNumber.equals(transactionRequest.accountNumber())) {
-            model.addAttribute("message",
-                    "Cannot deposit account " + transactionRequest.accountNumber()
-                            + " doesn't match id to update: " + accountNumber + ".");
-            return "error-page";
-        }*/
         bankService.deposit(accountNumber, amount);
         return "redirect:/";
     }
@@ -67,6 +61,9 @@ public class BankController {
     public ModelAndView showWithDrawTransactionPage(@PathVariable String accountNumber) {
         ModelAndView modelAndView = new ModelAndView("withDrawTransaction");
         BankAccount bankAccount = bankService.getAccount(accountNumber);
+        if (bankAccount.getBalance().compareTo(BigDecimal.ZERO) == 0) {
+            return new ModelAndView("redirect:/error");
+        }
         modelAndView.addObject("account", bankAccount);
         return modelAndView;
     }
@@ -81,6 +78,9 @@ public class BankController {
     public ModelAndView showTransferMoneyPage(@PathVariable String sourceAccountNumber) {
         ModelAndView modelAndView = new ModelAndView("transferMoneyTransaction");
         BankAccount bankAccount = bankService.getAccount(sourceAccountNumber);
+        if (bankAccount.getBalance().compareTo(BigDecimal.ZERO) == 0) {
+            return new ModelAndView("redirect:/error");
+        }
         modelAndView.addObject("account", bankAccount);
         return modelAndView;
     }
@@ -90,8 +90,8 @@ public class BankController {
                            @RequestParam BigDecimal balance,
                            @RequestParam String destinationAccountNumber,
                            @RequestParam BigDecimal transferAmount) {
-        if (balance.compareTo(transferAmount) <= 0) {
-            //
+        if (balance.compareTo(transferAmount) < 0 || accountNumber.equals(destinationAccountNumber)) {
+            return "redirect:/error";
         }
         bankService.transfer(accountNumber, destinationAccountNumber, transferAmount);
         return "redirect:/";
