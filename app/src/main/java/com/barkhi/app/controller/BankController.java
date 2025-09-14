@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
+//@RestController
 @RequestMapping("/bank/account")
 public class BankController {
 
